@@ -14,20 +14,26 @@ class App extends React.Component {
       items: furnitureData
     }
     this.addToOrder = this.addToOrder.bind(this);
+    this.deleteOrder = this.deleteOrder.bind(this);
   }
 
   render() {
     return (
       <div className="wrapper">
-        <Header orders={this.state.orders}/>
+        <Header orders={this.state.orders} onDelete={this.deleteOrder}/>
         <Items items={this.state.items} onAdd={this.addToOrder}/>
         <Footer />
       </div>
     );
   }
 
+  deleteOrder(id) {
+    this.setState({orders: this.state.orders.filter(el => el.id !== id)});
+  }
+
   addToOrder(item) {
-    this.setState({orders: [...this.state.orders, item]});
+    const foundItem = this.state.orders.find(el => el.id === item.id);
+    if(!foundItem) this.setState({orders: [...this.state.orders, item]});
   }
 }
 
